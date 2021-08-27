@@ -6,23 +6,40 @@
 </head>
 
 <body>
-<nav class="navbar has-shadow">
+<nav class="navbar has-shadow is-light">
     <!-- header-->
     <div class="navbar-brand">
         <a class="navbar-item">
-            <img src="assets/logo.png" alt="logo" style="max-height: 70px">
+            <img src="assets/logo.png" alt="logo" style="max-height: 70px" class="py-2 px-2">
             
         </a>
         <h1 class="navbar-item title">Crypto Holder </h1>
     </div>
 
-    <div class="navbar-menu">
+    <div class="navbar-menu " id="navlink">
         <div class="navbar-end">
-            <a  class="navbar-item">My Account</a>
+            <div class="navbar-item">
+                <p class="control">
+                    <button class="button is-dark py-2" id="login1">Login/Register</button>
+                </p>
+            </div>
         </div>
     </div>
 
 </nav>
+
+<!--table -->
+<div class="container ">
+<table class="table is-striped  is-fullwidth">
+    <thead>
+        <tr>
+            <th>Coin</th>
+            <th>Price</th>
+            <th>Holding Amount </th>
+            <th>Holding Value</th>
+            <th>Transaction Options</th>
+        </tr>
+    </thead>
 
 <?php
  
@@ -38,14 +55,79 @@ $pdo = new PDO($pdo_dsn, $db_user, $db_passwd);
 $q = $pdo->query("SELECT * FROM papers");
 
 while($row = $q->fetch()){
-  echo "<tr><td>".$row["code"]."</td><td>".$row["name"]."</td></tr>\n";
+  echo "<tr><th>".$row["code"]."</th><td>".$row["name"]."</td>";
+  echo "<td>null</td>";
+  echo "<td>null</td>";
+echo"<td>";
+    echo"<a class='button is-success is-light'>+</a>";
+    echo"<a class='button is-danger is-light'>-</a>";
+echo"</td></tr>";
 }
 
 ?>
 
+</table>
+    <div class="text">
+        <p> Please login to access your coin holder </p>
+    </div>
+    <a class="button is-success">+ Add Coin</a>
+    <a class="button is-danger">- Remove Coin</a>
 
+</div>
 
+<!--login popup -->
+<div class="modal" id="loginm">
+    <div class="modal-background" id="loginbg"></div>
+    <div class="modal-content has-background-white py-5 px-5">
+        <h3 class="title mb-6">Login</h3>
+        <form>
+            <div class="field">
+                <label  class="label">Name</label>
+                <div class="control">
+                     <input type="text" class="input" placeholder="Name">
+                </div>
+                <label class="label">Password</label>
+                <div class="control">
+                    <input type="password" class="input" placeholder="Password">
+                </div>
+                <div class="control pt-5">
+                    <button class="button is-dark">login</button>
+                    <a class="button is-light" id="goToRegister">Make Account</a>
+                </div>                   
+            </div>
+        </form>
+    </div>
+</div>
 
+<!--register popup -->
+<div class="modal" id="registerm">
+    <div class="modal-background" id="registerbg"></div>
+        <div class="modal-content has-background-white py-5 px-5">
+            <h3 class="title mb-6">Register Account</h3>
+            <form>
+                <div class="field">
+                    <label  class="label">Name</label>
+                    <div class="control">
+                        <input type="text" class="input" placeholder="Name">
+                    </div>
+                    <label class="label">Password</label>
+                    <div class="control">
+                        <input type="password" class="input" placeholder="Password">
+                    </div>
+                    <label class="label">Confirm Password</label>
+                    <div class="control">
+                        <input type="password" class="input" placeholder="Confirm Password">
+                    </div>
+                    <div class="control pt-5">
+                        <button class="button is-dark">Register</button>
+                    </div>
+                    
+                </div>
+            </form>
+        </div>
+</div>
+
+<script src="index.js"></script>
 </body>
 </html>
 
