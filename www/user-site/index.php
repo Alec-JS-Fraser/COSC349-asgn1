@@ -70,28 +70,29 @@ echo"</td></tr>";
     <div class="text">
         <p> Please login to access your coin holder </p>
     </div>
-    <a class="button is-success">+ Add Coin</a>
+    <div class="control">
+    <button class="button is-success" id="addbtn1">+ Add Coin</button>
     <a class="button is-danger">- Remove Coin</a>
-
+    </div>
 </div>
 
 <!--login popup -->
 <div class="modal" id="loginm">
     <div class="modal-background" id="loginbg"></div>
     <div class="modal-content has-background-white py-5 px-5">
-        <h3 class="title mb-6">Login</h3>
-        <form>
+        <h3 class="title mb-5">Login</h3>
+        <form method="GET">
             <div class="field">
                 <label  class="label">Name</label>
                 <div class="control">
-                     <input type="text" class="input" placeholder="Name">
+                     <input type="text" class="input" placeholder="Name" name="name" required>
                 </div>
                 <label class="label">Password</label>
                 <div class="control">
-                    <input type="password" class="input" placeholder="Password">
+                    <input type="password" class="input" placeholder="Password" name="password" required>
                 </div>
                 <div class="control pt-5">
-                    <button class="button is-dark">login</button>
+                    <button type="submit" class="button is-dark">login</button>
                     <a class="button is-light" id="goToRegister">Make Account</a>
                 </div>                   
             </div>
@@ -103,7 +104,7 @@ echo"</td></tr>";
 <div class="modal" id="registerm">
     <div class="modal-background" id="registerbg"></div>
         <div class="modal-content has-background-white py-5 px-5">
-            <h3 class="title mb-6">Register Account</h3>
+            <h3 class="title mb-5">Register Account</h3>
             <form>
                 <div class="field">
                     <label  class="label">Name</label>
@@ -125,6 +126,33 @@ echo"</td></tr>";
                 </div>
             </form>
         </div>
+</div>
+
+<!-- add coin pop-up -->
+<div class="modal" id="addcoin1">
+    <div class="modal-background" id="addcoinbg"></div>
+    <div class="modal-content has-background-white py-5 px-5">
+        <h3 class="title mb-5">Add Coin</h3>
+        <form method="GET">
+            <div class="field">
+                <label  class="label">Coin</label>
+                <div class="control">
+                     <input type="text" class="input" placeholder="Coin" name="coin" required>
+                </div>
+                <label class="label">Price</label>
+                <div class="control">
+                    <input type="number" class="input" placeholder="Price" name="price" required>
+                </div>
+                <label class="label">Holding Amount</label>
+                <div class="control">
+                    <input type="number" class="input" placeholder="Amount" name="amount" required>
+                </div>
+                <div class="control pt-5">
+                    <button type="submit" class="button is-success">Add</button>
+                </div>                   
+            </div>
+        </form>
+    </div>
 </div>
 
 <script src="index.js"></script>

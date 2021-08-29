@@ -22,3 +22,15 @@ goToRegister.addEventListener('click', () => {
 registerBg.addEventListener('click', () => {
     registermodal.classList.remove('is-active');
 });
+
+const goToAdd = document.querySelector('#addbtn1');
+const addBg = document.querySelector('#addcoinbg');
+const addmodal = document.querySelector('#addcoin1');
+
+goToAdd.addEventListener('click', () => {
+    addmodal.classList.add('is-active');
+});
+
+addBg.addEventListener('click', () => {
+    addmodal.classList.remove('is-active');
+});
