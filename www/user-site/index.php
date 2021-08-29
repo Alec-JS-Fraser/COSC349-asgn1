@@ -29,15 +29,15 @@
 </nav>
 
 <!--table -->
-<div class="container ">
+<div >
 <table class="table is-striped  is-fullwidth">
     <thead>
         <tr>
-            <th>Coin</th>
-            <th>Price</th>
-            <th>Holding Amount </th>
+            <th>Coin Name</th>
+            <th>Price Per Unit</th>
+            <th>Holding Amount</th>
             <th>Holding Value</th>
-            <th>Transaction Options</th>
+            <th>Select</th>
         </tr>
     </thead>
 
@@ -51,37 +51,50 @@ $db_passwd = 'insecure_db_pw';
 $pdo_dsn = "mysql:host=$db_host;dbname=$db_name";
 
 $pdo = new PDO($pdo_dsn, $db_user, $db_passwd);
-
-$q = $pdo->query("SELECT * FROM papers");
-
-while($row = $q->fetch()){
-  echo "<tr><th>".$row["code"]."</th><td>".$row["name"]."</td>";
-  echo "<td>null</td>";
-  echo "<td>null</td>";
-echo"<td>";
-    echo"<a class='button is-success is-light'>+</a>";
-    echo"<a class='button is-danger is-light'>-</a>";
-echo"</td></tr>";
+// add part where this become user ID
+$user = 1;
+function updateTable($pdo){
+    //$q = $pdo->query("SELECT c.coinName, c.coinValue, w.amount FROM  users u, coin c, wallets w WHERE w.coinID = c.coinID AND u.userID = w.userID" );
+    $q = $pdo->query("SELECT * FROM  coin ");
+    while($row = $q->fetch()){
+        $val = $row["amount"] * $row["coinValue"];
+        echo "<tr>
+      <th>".$row["coinName"]."</th><td>$".$row["coinValue"]."</td><td>".$row["amount"]." Units</td><td>".$val."</td><td><label class='checkbox'>
+      <input type='checkbox'> Alter/Remove
+    </label></td></tr>";
+      }
 }
 
+if(isset($_POST['coin']) && isset($_POST['price']) && isset($_POST['amount'])) {
+    $coin2 = $_POST['coin'];
+    $price2 = $_POST['price'];
+    $amount2 = $_POST['amount'];
+    $sql = "INSERT INTO coin (coinName, coinValue) VALUES ('$coin2', $price2)";
+    $pdo->query($sql);
+    $q = $pdo->query("SELECT coinID FROM coin WHERE coinName = '$coin2'");
+    $coinid = $q->fetch();
+    $sql = "INSERT INTO wallets VALUES ($user,$user, $coinid, $amount2)";
+    $pdo->query($sql);
+    
+    //$q = $pdo->query("SELECT TOP 1 * FROM Table ORDER BY ID DESC");
+}
+updateTable($pdo);
 ?>
-
 </table>
-    <div class="text">
+</div>
+<div class="container">
         <p> Please login to access your coin holder </p>
-    </div>
     <div class="control">
     <button class="button is-success" id="addbtn1">+ Add Coin</button>
     <a class="button is-danger">- Remove Coin</a>
     </div>
 </div>
-
 <!--login popup -->
 <div class="modal" id="loginm">
     <div class="modal-background" id="loginbg"></div>
     <div class="modal-content has-background-white py-5 px-5">
         <h3 class="title mb-5">Login</h3>
-        <form method="GET">
+        <form method="post">
             <div class="field">
                 <label  class="label">Name</label>
                 <div class="control">
@@ -92,7 +105,7 @@ echo"</td></tr>";
                     <input type="password" class="input" placeholder="Password" name="password" required>
                 </div>
                 <div class="control pt-5">
-                    <button type="submit" class="button is-dark">login</button>
+                    <button type="submit" class="button is-dark" id="submit">login</button>
                     <a class="button is-light" id="goToRegister">Make Account</a>
                 </div>                   
             </div>
@@ -133,7 +146,7 @@ echo"</td></tr>";
     <div class="modal-background" id="addcoinbg"></div>
     <div class="modal-content has-background-white py-5 px-5">
         <h3 class="title mb-5">Add Coin</h3>
-        <form method="GET">
+        <form action="" method="post">
             <div class="field">
                 <label  class="label">Coin</label>
                 <div class="control">
@@ -148,14 +161,18 @@ echo"</td></tr>";
                     <input type="number" class="input" placeholder="Amount" name="amount" required>
                 </div>
                 <div class="control pt-5">
-                    <button type="submit" class="button is-success">Add</button>
+                    <input type="submit" class="button is-success"/>
                 </div>                   
             </div>
         </form>
     </div>
+
 </div>
 
+
+
 <script src="index.js"></script>
+
 </body>
 </html>
 

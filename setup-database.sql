@@ -1,8 +1,66 @@
-CREATE TABLE papers (
-  code varchar(7),
-  name varchar(50) NOT NULL,
-  PRIMARY KEY (code)
+
+CREATE TABLE users (
+  userID int NOT NULL AUTO_INCREMENT,
+  userName varChar(16) NOT NULL UNIQUE,
+  userTotal int,
+  gain int,
+  password varChar(100) NOT NULL,
+  
+  PRIMARY KEY (userID)
 );
 
-INSERT INTO papers VALUES ('COSC326','Effective Programming');
-INSERT INTO papers VALUES ('COSC349','Cloud Computing Architecture');
+CREATE TABLE coin (
+  coinID int NOT NULL AUTO_INCREMENT,
+  coinName varchar(16) NOT NULL UNIQUE,
+  coinValue int NOT NULL,
+  
+  PRIMARY KEY (coinID)
+);
+CREATE TABLE wallets (
+  walletID int NOT NULL,
+  userID int NOT NULL REFERENCES users(userID),
+  coinID int NOT NULL REFERENCES coin(coinID),
+  amount int,
+  
+  PRIMARY KEY (walletID)
+);
+
+CREATE TABLE cyptoTransactions (
+  tranID int NOT NULL AUTO_INCREMENT,
+  userID int NOT NULL REFERENCES users(userID),
+  coinID int NOT NULL REFERENCES coin(coinID),
+  amount int NOT NULL,
+  tranTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  sell boolean NOT NULL,
+
+  PRIMARY KEY (tranID)
+);
+
+
+INSERT INTO coin (coinName, coinValue)
+VALUES ('binance',223);
+INSERT INTO coin (coinName, coinValue)
+VALUES ('cardano',254);
+INSERT INTO coin (coinName, coinValue)
+VALUES ('exodus',22);
+INSERT INTO coin (coinName, coinValue)
+VALUES ('bitcoin',566);
+INSERT INTO coin (coinName, coinValue)
+VALUES ('huhubug',9);
+INSERT INTO coin (coinName, coinValue)
+VALUES ('smoochcoin',1);
+
+INSERT INTO users (userName, password)
+VALUES ('Ally','AllyIsC00l');
+INSERT INTO users (userName, password)
+VALUES ('Brian','BitcoinRulz');
+INSERT INTO users (userName, password)
+VALUES ('Charlie','OwMyHead');
+INSERT INTO users (userName, password)
+VALUES ('Daria','NSAisWatching');
+INSERT INTO users (userName, password)
+VALUES ('Elon','HelpMeTheyTookMyKids');
+INSERT INTO users (userName, password)
+VALUES ('Fred','xHwejd*672-0*)))@');
+
+INSERT INTO wallets VALUES  ( 1, 1, 1, 34 );
