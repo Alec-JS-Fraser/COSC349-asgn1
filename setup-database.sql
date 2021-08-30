@@ -17,9 +17,9 @@ CREATE TABLE coin (
   PRIMARY KEY (coinID)
 );
 CREATE TABLE wallets (
-  walletID int NOT NULL,
-  userID int NOT NULL REFERENCES users(userID),
-  coinID int NOT NULL REFERENCES coin(coinID),
+  walletID int NOT NULL AUTO_INCREMENT,
+  userID int NOT NULL ,
+  coinID int NOT NULL ,
   amount int,
   
   PRIMARY KEY (walletID)
@@ -63,4 +63,5 @@ VALUES ('Elon','HelpMeTheyTookMyKids');
 INSERT INTO users (userName, password)
 VALUES ('Fred','xHwejd*672-0*)))@');
 
-INSERT INTO wallets VALUES  ( 1, 1, 1, 34 );
+INSERT INTO wallets VALUES  (NULL, 1, 1, 34 );
+INSERT INTO wallets VALUES  (NULL, 1, 4, 99 );

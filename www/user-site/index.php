@@ -6,6 +6,10 @@
 </head>
 
 <body>
+
+
+
+
 <nav class="navbar has-shadow is-light">
     <!-- header-->
     <div class="navbar-brand">
@@ -36,49 +40,56 @@
             <th>Coin Name</th>
             <th>Price Per Unit</th>
             <th>Holding Amount</th>
-            <th>Holding Value</th>
-            <th>Select</th>
+            <th>Total Value</th>
+            <th>Coin Options</th>
+            
         </tr>
     </thead>
 
 <?php
  
-$db_host   = '192.168.2.12';
-$db_name   = 'fvision';
-$db_user   = 'webuser';
-$db_passwd = 'insecure_db_pw';
+    include "conn.php";
+    // add part where this become user ID
+    $user = 1;
+    function updateTable($pdo){
+        $q = $pdo->query("SELECT c.coinName, c.coinValue, w.amount, w.walletID FROM  users u, coin c, wallets w WHERE w.coinID = c.coinID AND u.userID = w.userID" );
+        //$q = $pdo->query("SELECT * FROM  coin ");
+        //$q = $pdo->query("SELECT * FROM  wallets ");
+        //$q = $pdo->query("SELECT coinID FROM coin WHERE coinName = 'binance'");
+        //$coinid = $q->fetch();
+        //echo $coinid['coinID'];
+        while($row = $q->fetch()){
+            $val = $row["amount"] * $row["coinValue"];
+            ?>
+            <tr>
+                <th><?php echo $row['coinName']; ?></th>
+                <td>$<?php echo $row['coinValue']; ?></td>
+                <td><?php echo $row['amount']; ?> Units</td>
+                <td>$<?php echo $val; ?></td>
+                <td><a class="button is-warning is-light mr-3" href="edit.php?id=<?php echo $row['walletID']; ?>">Edit Amount</a>
+                <a class="button is-danger is-light" href="delete.php?id=<?php echo $row['walletID']; ?>">Delete</a></td>
+            </tr>
+            <?php
+        }
+    }
+?>
 
-$pdo_dsn = "mysql:host=$db_host;dbname=$db_name";
-
-$pdo = new PDO($pdo_dsn, $db_user, $db_passwd);
-// add part where this become user ID
-$user = 1;
-function updateTable($pdo){
-    //$q = $pdo->query("SELECT c.coinName, c.coinValue, w.amount FROM  users u, coin c, wallets w WHERE w.coinID = c.coinID AND u.userID = w.userID" );
-    $q = $pdo->query("SELECT * FROM  coin ");
-    while($row = $q->fetch()){
-        $val = $row["amount"] * $row["coinValue"];
-        echo "<tr>
-      <th>".$row["coinName"]."</th><td>$".$row["coinValue"]."</td><td>".$row["amount"]." Units</td><td>".$val."</td><td><label class='checkbox'>
-      <input type='checkbox'> Alter/Remove
-    </label></td></tr>";
-      }
-}
-
-if(isset($_POST['coin']) && isset($_POST['price']) && isset($_POST['amount'])) {
-    $coin2 = $_POST['coin'];
-    $price2 = $_POST['price'];
-    $amount2 = $_POST['amount'];
-    $sql = "INSERT INTO coin (coinName, coinValue) VALUES ('$coin2', $price2)";
-    $pdo->query($sql);
-    $q = $pdo->query("SELECT coinID FROM coin WHERE coinName = '$coin2'");
-    $coinid = $q->fetch();
-    $sql = "INSERT INTO wallets VALUES ($user,$user, $coinid, $amount2)";
-    $pdo->query($sql);
-    
-    //$q = $pdo->query("SELECT TOP 1 * FROM Table ORDER BY ID DESC");
-}
-updateTable($pdo);
+<?php
+    if(isset($_POST['coin']) && isset($_POST['price']) && isset($_POST['amount'])) {
+        $coin2 = $_POST['coin'];
+        $price2 = $_POST['price'];
+        $amount2 = $_POST['amount'];
+        $sql = "INSERT INTO coin (coinName, coinValue) VALUES ('$coin2', $price2)";
+        $pdo->query($sql);
+        $q = $pdo->query("SELECT coinID FROM coin WHERE coinName = '$coin2'");
+        $coinid = $q->fetch();
+        $coinid2 = $coinid['coinID'];
+        $sql1 = "INSERT INTO wallets (walletID, userID, coinID, amount) VALUES (NULL, $user, $coinid2, $amount2)";
+        $q =$pdo->query($sql1);
+        $pdo->exec($q);
+        unset($_POST);
+    }
+    updateTable($pdo); 
 ?>
 </table>
 </div>
@@ -86,7 +97,6 @@ updateTable($pdo);
         <p> Please login to access your coin holder </p>
     <div class="control">
     <button class="button is-success" id="addbtn1">+ Add Coin</button>
-    <a class="button is-danger">- Remove Coin</a>
     </div>
 </div>
 <!--login popup -->
@@ -161,12 +171,11 @@ updateTable($pdo);
                     <input type="number" class="input" placeholder="Amount" name="amount" required>
                 </div>
                 <div class="control pt-5">
-                    <input type="submit" class="button is-success"/>
+                    <input type="submit" class="button is-success" />
                 </div>                   
             </div>
         </form>
     </div>
-
 </div>
 
 
