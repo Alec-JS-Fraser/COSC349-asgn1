@@ -1,7 +1,7 @@
 
 <html lang="en" >
 <head>
-<title>Crypto Holder </title>
+<title>Crypto Holder Admin</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 </head>
 
@@ -14,14 +14,14 @@
             <img src="assets/logo.png" alt="logo" style="max-height: 70px" class="py-2 px-2">
             
         </a>
-        <h1 class="navbar-item title">Crypto Holder </h1>
+        <h1 class="navbar-item title">Crypto Holder Admin</h1>
     </div>
 
     <div class="navbar-menu " id="navlink">
         <div class="navbar-end">
             <div class="navbar-item">
                 <p class="control">
-                    <button class="button is-dark py-2" id="login1">Login/Register</button>
+                    <button class="button is-dark py-2" id="login1"> Admin Login</button>
                 </p>
             </div>
         </div>
@@ -38,50 +38,53 @@ $uname = $q->fetch();
 
 ?>
 <div class="content">
-<h1 class="py-2 px-3">Welcome <?php echo $uname['userName'] ?> </h1>
+<h1 class="py-2 px-3">Transaction Table</h1>
 </div>
 <!--table -->
 <div >
-<table class="table is-striped  is-fullwidth">
-    <thead>
-        <tr>
-            <th>Coin Name</th>
-            <th>Price Per Unit</th>
-            <th>Holding Amount</th>
-            <th>Total Value</th>
-            <th>Coin Options</th>
-            
-        </tr>
-    </thead>
-
-<?php
- 
-    
-    function updateTable($pdo, $user){
-        $q = $pdo->query("SELECT c.coinName, c.coinValue, w.amount, w.walletID FROM  users u, coin c, wallets w WHERE w.coinID = c.coinID AND u.userID = w.userID AND u.userID='$user'");
-        while($row = $q->fetch()){
-            $val = $row["amount"] * $row["coinValue"];
-            ?>
+    <table class="table is-striped  is-fullwidth">
+        <thead>
             <tr>
-                <th><?php echo $row['coinName']; ?></th>
-                <td>$<?php echo $row['coinValue']; ?></td>
-                <td><?php echo $row['amount']; ?> Units</td>
-                <td>$<?php echo $val; ?></td>
-                <td><a class="button is-warning is-light mr-3" href="edit.php?id=<?php echo $row['walletID']; ?>">Edit Amount</a>
-                <a class="button is-danger is-light" href="delete.php?id=<?php echo $row['walletID']; ?>">Delete</a></td>
+                <th>User</th>
+                <th>Coin Name</th>
+                <th>Transaction</th>
+                <th>Timestamp</th>
             </tr>
-            <?php
-        }
-    }
-    updateTable($pdo,$user); 
-?>
+        </thead>
 
-</table>
+    <?php
+    
+        
+        function updateTable($pdo){
+            $q = $pdo->query("SELECT u.userName, c.coinName, t.tranType, t.tranTime FROM  users u, coin c, transactions t WHERE t.coinID = c.coinID AND u.userID = t.userID ORDER BY t.tranID DESC");
+            while($row = $q->fetch()){
+                ?>
+                <tr>
+                    <th><?php echo $row['userName']; ?></th>
+                    <td><?php echo $row['coinName']; ?></td>
+                    <td><?php echo $row['tranType']; ?> </td>
+                    <td><?php echo $row['tranTime']; ?></td>
+                </tr>
+                <?php
+            }
+        }
+        updateTable($pdo); 
+    ?>
+    </table>
 </div>
+<!-- update table button -->
 
 <div class="px-3 py-2 control">
-    <button class="button is-success" id="addbtn1">+ Add Coin</button>
+<button class="button is-dark" onClick="window.location.reload();">Update Table</button>
 </div>
+
+<!-- coin table -->
+
+
+
+
+
+
 <!--login popup -->
 <div class="modal" id="loginm">
     <div class="modal-background" id="loginbg"></div>

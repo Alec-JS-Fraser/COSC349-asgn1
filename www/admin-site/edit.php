@@ -2,10 +2,8 @@
 
 include "conn.php"; // Using database connection file here
 
-session_start();
-$user = $_SESSION['user_id'];
-
 $id = $_GET['id']; // get id through query string
+
 
 $q = $pdo->query("SELECT * FROM wallets WHERE walletID = $id");
 $data = $q->fetch();
@@ -19,9 +17,6 @@ if(isset($_POST['update'])) // when click on Update button
 	
     $edit = $pdo->query("UPDATE wallets SET amount = $nAmount WHERE walletID = $id");
 	$pdo->exec($edit);
-
-    $sql2 = $pdo->query("INSERT INTO transactions (userID, coinID, tranType) VALUES ($user, $cid, 'Edited Coin')");
-    $pdo->exec($sql2);
     if($edit)
     {
         

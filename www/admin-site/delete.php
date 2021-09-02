@@ -2,10 +2,9 @@
 
 include "conn.php"; 
 
-session_start();
-$user = $_SESSION['user_id'];
-
 $id = $_GET['id']; 
+
+
 
 $q = $pdo->query("SELECT * FROM wallets WHERE walletID = $id");
 $data = $q->fetch();
@@ -16,9 +15,6 @@ if(isset($_POST['delete'])) // when click on Update button
 {
     $del = $pdo->query("DELETE FROM wallets WHERE walletID = $id");
     $pdo->exec($del);
-
-    $sql2 = $pdo->query("INSERT INTO transactions (userID, coinID, tranType) VALUES ($user, $cid, 'Deleted Coin')");
-    $pdo->exec($sql2);
     
     if($del)
     {

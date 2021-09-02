@@ -25,13 +25,12 @@ CREATE TABLE wallets (
   PRIMARY KEY (walletID)
 );
 
-CREATE TABLE cyptoTransactions (
+CREATE TABLE transactions (
   tranID int NOT NULL AUTO_INCREMENT,
-  userID int NOT NULL REFERENCES users(userID),
-  coinID int NOT NULL REFERENCES coin(coinID),
-  amount int NOT NULL,
+  userID int NOT NULL,
+  coinID int NOT NULL,
+  tranType varchar(50) NOT NULL,
   tranTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  sell boolean NOT NULL,
 
   PRIMARY KEY (tranID)
 );
@@ -50,6 +49,8 @@ VALUES ('huhubug',9);
 INSERT INTO coin (coinName, coinValue)
 VALUES ('smoochcoin',1);
 
+INSERT INTO users (userName, password)
+VALUES ('Admin','Admin');
 INSERT INTO users (userName, password)
 VALUES ('Ally','AllyIsC00l');
 INSERT INTO users (userName, password)

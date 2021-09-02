@@ -37,10 +37,6 @@ Vagrant.configure("2") do |config|
     # may well be where markers mark your assignment.
     webserver.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
 
-    # Now we have a section specifying the shell commands to provision
-    # the webserver VM. Note that the file test-website.conf is copied
-    # from this host to the VM through the shared folder mounted in
-    # the VM at /vagrant
     webserver.vm.provision "shell", path: "build-userserver.sh"
       
     
@@ -57,6 +53,20 @@ Vagrant.configure("2") do |config|
     dbserver.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
     
     dbserver.vm.provision "shell", path: "build-dbserver.sh"
+  end
+
+  config.vm.define "adminserver" do |adminserver|
+   
+    adminserver.vm.hostname = "adminserver"
+    
+    adminserver.vm.network "forwarded_port", guest: 80, host: 8081, host_ip: "127.0.0.1"
+    
+    adminserver.vm.network "private_network", ip: "192.168.2.13"
+
+    adminserver.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
+
+    adminserver.vm.provision "shell", path: "build-adminserver.sh"
+      
   end
 
 end

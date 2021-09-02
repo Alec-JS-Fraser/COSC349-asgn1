@@ -19,24 +19,24 @@
 
       # Run some setup commands to get the database ready to use.
       # First create a database.
-      echo "CREATE DATABASE fvision;" | mysql
+      echo "CREATE DATABASE coinHolder;" | mysql
 
       # Then create a database user "webuser" with the given password.
-      echo "CREATE USER 'webuser'@'%' IDENTIFIED BY 'insecure_db_pw';" | mysql
+      echo "CREATE USER 'admin'@'%' IDENTIFIED BY '3c15b90868025dae79a5671ca3718085';" | mysql
 
       # Grant all permissions to the database user "webuser" regarding
       # the "fvision" database that we just created, above.
-      echo "GRANT ALL PRIVILEGES ON fvision.* TO 'webuser'@'%'" | mysql
+      echo "GRANT ALL PRIVILEGES ON coinHolder.* TO 'admin'@'%'" | mysql
       
       # Set the MYSQL_PWD shell variable that the mysql command will
       # try to use as the database password ...
-      export MYSQL_PWD='insecure_db_pw'
+      export MYSQL_PWD='3c15b90868025dae79a5671ca3718085'
 
       # ... and run all of the SQL within the setup-database.sql file,
       # which is part of the repository containing this Vagrantfile, so you
       # can look at the file on your host. The mysql command specifies both
       # the user to connect as (webuser) and the database to use (fvision).
-      cat /vagrant/setup-database.sql | mysql -u webuser fvision
+      cat /vagrant/setup-database.sql | mysql -u admin coinHolder
 
       # By default, MySQL only listens for local network requests,
       # i.e., that originate from within the dbserver VM. We need to
