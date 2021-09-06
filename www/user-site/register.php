@@ -1,3 +1,4 @@
+<!-- php script for registerign a new user and addingf them to the users table -->
 <?php
 include 'conn.php';
 
@@ -10,7 +11,7 @@ if ($password!=$confirm){
     die('Passwords do not match!');
 }
 try{
-    $q=$pdo->prepare('INSERT INTO users (userName, password) VALUES (:username,:password)');
+    $q=$pdo->prepare('INSERT INTO users (userName, password) VALUES (:username,:password)'); // query to add new user in table
     $q->bindValue(':username',$name);
     $q->bindValue(':password',$password);
     $result=$q->execute();

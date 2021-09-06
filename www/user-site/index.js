@@ -1,4 +1,4 @@
-//modal js
+//modal js for user site
 const loginButton = document.querySelector('#login1');
 const loginBg = document.querySelector('#loginbg');
 const loginmodal = document.querySelector('#loginm');

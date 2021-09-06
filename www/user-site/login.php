@@ -1,11 +1,13 @@
+<!-- PHP script for logging in and creating session -->
 <?php
 session_start();
 
-include "conn.php"; // Using database connection file here
+include "conn.php"; 
 
 $user = !empty($_POST['name']) ? trim($_POST['name']) : null;
 $pass = !empty($_POST['password']) ? trim($_POST['password']) : null;
 
+// creates session with logged in user to show corret wallet
 try{
     $q=$pdo->prepare('SELECT * FROM users WHERE userName = :user');
     $q->bindValue(':user',$user);

@@ -1,22 +1,22 @@
+<!-- PHP script to delete a coin from the database -->
 <?php
 
 include "conn.php"; 
 
+session_start();
+$user = $_SESSION['user_id'];
+
 $id = $_GET['id']; 
 
-
-
-$q = $pdo->query("SELECT * FROM wallets WHERE walletID = $id");
+$q = $pdo->query("SELECT * FROM coin WHERE coinID = $id"); //query to select coorect coin
 $data = $q->fetch();
-$cid = $data['coinID'];
-$q1 = $pdo->query("SELECT * FROM coin WHERE coinID = $cid");
-$name = $q1->fetch();
+
 if(isset($_POST['delete'])) // when click on Update button
 {
-    $del = $pdo->query("DELETE FROM wallets WHERE walletID = $id");
+    $del = $pdo->query("DELETE FROM coin WHERE coinID = $id"); // query to delete coin
     $pdo->exec($del);
     
-    if($del)
+    if($del) //executed once query has run
     {
     
         header("location:index.php"); 
@@ -35,11 +35,11 @@ if(isset($_POST['cancel'])){
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 
-
+<!-- popup for deleting coin -->
 <div class="modal is-active" >
     <div class="modal-background" ></div>
     <div class="modal-content has-background-white py-5 px-5">
-        <h3 class="title mb-5">Do you want to delete <?php echo $name['coinName'] ?> ?</h3>
+        <h3 class="title mb-5">Do you want to delete <?php echo $data['coinName'] ?> ?</h3>
         <form action="" method="post">
             <div class="field">
                 <div class="control pt-5">

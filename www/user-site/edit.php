@@ -1,35 +1,32 @@
+<!-- PHP script for editing a coins amount-->
 <?php
 
-include "conn.php"; // Using database connection file here
+include "conn.php"; 
 
 session_start();
 $user = $_SESSION['user_id'];
 
-$id = $_GET['id']; // get id through query string
+$id = $_GET['id']; 
 
-$q = $pdo->query("SELECT * FROM wallets WHERE walletID = $id");
+$q = $pdo->query("SELECT * FROM wallets WHERE walletID = $id"); // query to select correct wallet 
 $data = $q->fetch();
 $cid = $data['coinID'];
-$q1 = $pdo->query("SELECT * FROM coin WHERE coinID = $cid");
+$q1 = $pdo->query("SELECT * FROM coin WHERE coinID = $cid"); // query to select correct coin 
 $name = $q1->fetch();
 
 if(isset($_POST['update'])) // when click on Update button
 {
     $nAmount= $_POST['newAmount'];
 	
-    $edit = $pdo->query("UPDATE wallets SET amount = $nAmount WHERE walletID = $id");
+    $edit = $pdo->query("UPDATE wallets SET amount = $nAmount WHERE walletID = $id"); //query that updates the wallet amount 
 	$pdo->exec($edit);
 
-    $sql2 = $pdo->query("INSERT INTO transactions (userID, coinID, tranType) VALUES ($user, $cid, 'Edited Coin')");
+    $sql2 = $pdo->query("INSERT INTO transactions (userID, coinID, tranType) VALUES ($user, $cid, 'Edited Personal Coin Amount')"); // query that adds the record to transactions 
     $pdo->exec($sql2);
-    if($edit)
-    {
-        
+    if($edit){
         header("location:index.php"); 
         exit;
-    }
-    else
-    {
+    }else{
         echo "Update Error";
     }    	
 }
@@ -42,7 +39,7 @@ if(isset($_POST['cancel'])){
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 
-
+<!-- popup for editng coin amount -->
 <div class="modal is-active" >
     <div class="modal-background" ></div>
     <div class="modal-content has-background-white py-5 px-5">

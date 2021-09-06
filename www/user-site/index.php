@@ -1,14 +1,14 @@
-
+<!-- main page for the user site-->
 <html lang="en" >
 <head>
 <title>Crypto Holder </title>
+<!-- bulmo.io open source css --> 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 </head>
 
 <body>
-
+<!-- header-->
 <nav class="navbar has-shadow is-light">
-    <!-- header-->
     <div class="navbar-brand">
         <a class="navbar-item">
             <img src="assets/logo.png" alt="logo" style="max-height: 70px" class="py-2 px-2">
@@ -68,7 +68,7 @@ $uname = $q->fetch();
                 <td><?php echo $row['amount']; ?> Units</td>
                 <td>$<?php echo $val; ?></td>
                 <td><a class="button is-warning is-light mr-3" href="edit.php?id=<?php echo $row['walletID']; ?>">Edit Amount</a>
-                <a class="button is-danger is-light" href="delete.php?id=<?php echo $row['walletID']; ?>">Delete</a></td>
+                <a class="button is-danger is-light" href="delete.php?id=<?php echo $row['walletID']; ?>">Remove Coin</a></td>
             </tr>
             <?php
         }
@@ -79,9 +79,18 @@ $uname = $q->fetch();
 </table>
 </div>
 
+<!-- add coin button -->
 <div class="px-3 py-2 control">
-    <button class="button is-success" id="addbtn1">+ Add Coin</button>
+    <?php
+        if(!isset($user)){
+            echo "<p class='text px-3'> Please login to use Coin Holder</p>";
+        }else{
+            echo "<button class='button is-success' id='addbtn1'>+ Add Coin</button>";
+            echo '<button class=" ml-2 button is-dark" onClick="window.location.reload();">Update Table</button>';
+        }
+    ?>
 </div>
+
 <!--login popup -->
 <div class="modal" id="loginm">
     <div class="modal-background" id="loginbg"></div>
@@ -160,7 +169,6 @@ $uname = $q->fetch();
         </form>
     </div>
 </div>
-
 
 <script src="index.js"></script>
 

@@ -1,3 +1,4 @@
+<!-- PHP script to login in the user to a session --> 
 <?php
 session_start();
 
@@ -6,6 +7,7 @@ include "conn.php"; // Using database connection file here
 $user = !empty($_POST['name']) ? trim($_POST['name']) : null;
 $pass = !empty($_POST['password']) ? trim($_POST['password']) : null;
 
+// finds user and adds the user ID to $user  
 try{
     $q=$pdo->prepare('SELECT * FROM users WHERE userName = :user');
     $q->bindValue(':user',$user);
